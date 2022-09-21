@@ -1,0 +1,43 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+            "servers_anaprodcvp_nsql_server_nameame": {
+            "defaultValue": "test_sql_server",
+            "type": "String"}
+    },
+    "functions": [],
+    "variables": {},
+    "resources": [{
+        "name": "[parameters('servers_anaprodcvp_nsql_server_nameame')]",
+        "type": "Microsoft.Sql/servers",
+        "apiVersion": "2014-04-01",
+        "location": "[resourceGroup().location]",
+        "tags": {
+                "Requested by": "Jayasmita Rout",
+                "Task Requested by": " Mahesh Jadhav",
+                "Application": "CDP",
+                "Environment": "UAT"
+        },
+        "properties": {
+            "administratorLogin": "LNT_Admin",
+            "administratorLoginPassword": "LNT@admin123"
+        },
+        "resources": [
+            {
+                "type": "firewallRules",
+                "apiVersion": "2014-04-01",
+                "dependsOn": [
+                    "[resourceId('Microsoft.Sql/servers', 'sqlServer1')]"
+                ],
+                "location": "[resourceGroup().location]",
+                "name": "AllowAllWindowsAzureIps",
+                "properties": {
+                    "startIpAddress": "0.0.0.0",
+                    "endIpAddress": "0.0.0.0"
+                }
+            }
+        ]
+    }],
+    "outputs": {}
+}
